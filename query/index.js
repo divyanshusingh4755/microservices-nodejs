@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const axios = require("axios");
 
 const app = express();
 app.use(express.json());
@@ -17,13 +18,7 @@ const posts = {};
 //     }
 // }
 
-app.get('/posts', (req, res) => {
-    res.send(posts);
-})
-
-app.post("/events", (req, res) => {
-    const { type, data } = req.body;
-
+const handleEvents = (type, data) => {
     if (type === "PostCreated") {
         const { id, title, } = data;
 
@@ -45,10 +40,27 @@ app.post("/events", (req, res) => {
         comment.status = status;
         comment.content = content;
     }
+}
+
+app.get('/posts', (req, res) => {
+    res.send(posts);
+})
+
+app.post("/events", (req, res) => {
+    const { type, data } = req.body;
+
+    handleEvents(type, data);
+
 
     res.send({});
 })
 
-app.listen(5002, () => {
+app.listen(5002, async () => {
     console.log("listening on port 5002")
+
+    const res = await axios.get('http://localhost:5005/events')
+
+    for (let event of res.data) {
+        handleEvents(event.type, event.data);
+    }
 })
