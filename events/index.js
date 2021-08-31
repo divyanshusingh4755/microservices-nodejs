@@ -8,7 +8,8 @@ app.post('/events', (req, res) => {
     const event = req.body;
     axios.post('http://localhost:5000/events', event);  //Post
     axios.post('http://localhost:5001/events', event);  //comments
-    axios.post('http://localhost:5002/events', event);  //Query Service
+    axios.post('http://localhost:5002/events', event);  //query Service
+    axios.post('http://localhost:5003/events', event);  //moderation Service
 
     res.send({ status: 'OK' });
 })
