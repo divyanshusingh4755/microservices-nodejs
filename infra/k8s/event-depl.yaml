@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: events
+  template:
+    metadata:
+      labels:
+        app: events
+    spec:
+      containers:
+        - name: events
+          image: divyanshusingh4755/events
+
+---
+# configuration for cluster IP service
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-srv
+spec:
+  selector:
+    app: event
+  type: ClusterIP
+  ports:
+    - name: event
+      protocol: TCP
+      port: 5005
+      targetPort: 5005

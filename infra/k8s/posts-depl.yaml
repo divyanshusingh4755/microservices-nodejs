@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: posts-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: posts
+  template:
+    metadata:
+      labels:
+        app: posts
+    spec:
+      containers:
+        - name: posts
+          image: divyanshusingh4755/posts
+
+---
+# Cluster IP Post service
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts-clusterip-srv
+spec:
+  selector:
+    app: posts
+  type: ClusterIP
+  ports:
+    - name: posts
+      protocol: TCP
+      port: 5000 #used for defining the port in which it will run
+      targetPort: 5000 #used for listening data from posts index.js
