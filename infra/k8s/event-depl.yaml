@@ -24,10 +24,10 @@ metadata:
   name: event-srv
 spec:
   selector:
-    app: event
+    app: events
   type: ClusterIP
   ports:
-    - name: event
+    - name: events
       protocol: TCP
       port: 5005
       targetPort: 5005
